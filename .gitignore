@@ -73,3 +73,5 @@ build/*
 migrations/*
 contracts/*
 uploads/*
+
+*.*.js.sw*
