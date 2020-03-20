@@ -75,3 +75,4 @@ contracts/*
 uploads/*
 
 *.*.js.sw*
+*.*.sw*
