@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 const port = 3000 || process.env.PORT;
 const Web3 = require('web3');
-const fuzzer = require('./connection/ethereum/fuzzer.js');
+const ethereum_fuzzer = require('./connection/ethereum/fuzzer.js');
 const fisco_fuzzer = require('./connection/fisco/fuzzer.js');
 
 const bodyParser = require('body-parser');
@@ -36,6 +36,56 @@ let g_bootstrap_build_attack = './build/contracts/AttackDAO.json';
 let g_bootstrap_source_attack = './contracts/SimpleDAO.sol';
 let g_bootstrap_source_target = './contracts/AttackDAO.sol';
 
+let default_option = {
+	fuzzer: fisco_fuzzer,
+	server: "",
+        port: "",
+        directory: "",
+	file: "",
+	configuration: null
+};
+const toolkits = function(option){
+   class Kit {
+	 constructor(){
+   		this.fuzzer = option.fuzzer;
+	        this.url = option.server;
+	        this.port = option.port;
+	        this.directory = option.directory;
+                this.file = option.file;
+                this.configuration = option.configuration;
+	  }
+	  linkServer(){
+             console.log("link server");	    
+	     return this;
+	  }
+	   testServer(){
+	     return this;
+	  }
+
+	  deployContract(){
+             console.log("deploy contract");	    
+	     return this;
+	  }
+	 // function getContract(address){
+	 // }
+	   fuzz(){
+              console.log("fuzz");	    
+	      return this;
+	   }
+	   configuration(){
+              console.log("configuration");	    
+	      return this;
+	   }
+	   quick_start(){
+              console.log("quick start");	    
+	      this.configuration().linkServer().deployContract().fuzz();
+	  }
+   }
+   var toolkit = new Kit();
+   return toolkit;
+}
+const toolkit =  toolkits(default_option);
+toolkit.quick_start();
 function init_g_path_map(){
   let contracts =  fs.readdirSync("./build/contracts");
   let tokens = new Array();
@@ -291,9 +341,10 @@ function parse_cmd() {
 }
 
 parse_cmd();
-fuzzer.setProvider(httpRpcAddr);
-fuzzer.unlockAccount();
+//fuzzer.setProvider(httpRpcAddr);
+//fuzzer.unlockAccount();
 
 app.listen(port, () => {
   console.log("Express Listening at http://localhost:" + port);
 });
+
