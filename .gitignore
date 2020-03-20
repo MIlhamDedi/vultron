@@ -75,4 +75,4 @@ contracts/*
 uploads/*
 
 *.*.js.sw*
-*.*.sw*
+.gitignore.sw*
